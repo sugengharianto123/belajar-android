@@ -12,12 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.graphics.Color;
-import android.graphics.Color;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "LifecycleDemo";
     private int count = 0;
+    private int resumeCount = 0;
     private TextView tvCounter;
     private TextView tvStatus;
 
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateStatus("onResume");
+        resumeCount++;
+        updateStatus("onResume (#" + resumeCount + ")");
     }
 
     @Override
