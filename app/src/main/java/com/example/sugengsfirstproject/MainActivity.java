@@ -11,6 +11,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.graphics.Color;
+import android.graphics.Color;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "LifecycleDemo";
@@ -39,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
         btnTambah.setOnClickListener(v -> {
             count++;
             tvCounter.setText(String.valueOf(count));
+        });
+
+        Button btnReset = findViewById(R.id.btnReset);
+
+        btnTambah.setOnClickListener(v -> {
+            count++;
+            tvCounter.setText(String.valueOf(count));
+            if (count >= 10) {
+                tvCounter.setTextColor(Color.parseColor("#2E7D32")); // Hijau
+            }
+        });
+
+        btnReset.setOnClickListener(v -> {
+            count = 0;
+            tvCounter.setText(String.valueOf(count));
+            tvCounter.setTextColor(Color.BLACK);
         });
     }
 
