@@ -1,5 +1,6 @@
 package com.example.sugengsfirstproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -59,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
             count = 0;
             tvCounter.setText(String.valueOf(count));
             tvCounter.setTextColor(Color.BLACK);
+        });
+
+        Button btnBukaInfo = findViewById(R.id.btnBukaInfo);
+        btnBukaInfo.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+            startActivity(intent);
         });
     }
 
