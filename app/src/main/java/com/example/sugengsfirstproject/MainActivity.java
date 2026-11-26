@@ -7,12 +7,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.graphics.Color;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,33 +41,52 @@ public class MainActivity extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvStatus);
         Button btnTambah = findViewById(R.id.btnTambah);
 
+
+        if (savedInstanceState != null) {
+            count = savedInstanceState.getInt("STATE_COUNT", 0);
+            Log.d(TAG, "data count dipulihkan dari savedInstanceState : " + count);
+
+        }
+
         updateStatus("onCreate");
         tvCounter.setText(String.valueOf(count));
 
-        btnTambah.setOnClickListener(v -> {
-            count++;
-            tvCounter.setText(String.valueOf(count));
-        });
+        if (count >= 10) {
+            tvCounter.setTextColor(Color.parseColor("#2E7D32"));
+        }
+
 
         Button btnReset = findViewById(R.id.btnReset);
 
         btnTambah.setOnClickListener(v -> {
             count++;
+            Log.d(TAG, "Tombol tambah ditekan, nilai count sekarang = " + count);
             tvCounter.setText(String.valueOf(count));
             if (count >= 10) {
-                tvCounter.setTextColor(Color.parseColor("#2E7D32")); // Hijau
+                Log.i(TAG, " Target Tercapai! Count sudah >= 10");
+                if (count == 10) {
+                    Toast.makeText(MainActivity.this, "Hitungan Sudah sampai 10 tambah terus!", Toast.LENGTH_SHORT).show();
+                }
+                tvCounter.setTextColor(Color.parseColor("#2E7D32"));
             }
         });
 
         btnReset.setOnClickListener(v -> {
-            count = 0;
-            tvCounter.setText(String.valueOf(count));
-            tvCounter.setTextColor(Color.BLACK);
+            if (count > 0) {
+                Log.w(TAG, "Tombol reeset ditekan. count sebelumnya (" + count + ") dikembailkan ke 0");
+                count = 0;
+                tvCounter.setText(String.valueOf(count));
+                tvCounter.setTextColor(Color.BLACK);
+                Toast.makeText(MainActivity.this, "Hitungan direset", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Sudah 0!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         Button btnBukaInfo = findViewById(R.id.btnBukaInfo);
         btnBukaInfo.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, InfoActivity.class);
+            intent.putExtra("EXTRA_COUNT", count);
             startActivity(intent);
         });
     }
@@ -99,6 +120,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy dipanggil");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("STATE_COUNT", count);
+        Log.d(TAG, "onSaveInstanceState Menyimpan count = " + count);
     }
 
     private void updateStatus(String namaMethod) {
